@@ -2,9 +2,11 @@ package com.example.tddconcepts.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.tddconcepts.data.local.ShoppingItem
+import com.example.tddconcepts.data.local.ShoppingDao
 import com.example.tddconcepts.data.local.ShoppingItemDataBase
 import com.example.tddconcepts.data.remote.PixalByApi
+import com.example.tddconcepts.repositories.DefaultShoppingRepository
+import com.example.tddconcepts.repositories.ShoppingRepository
 import com.example.tddconcepts.utils.Constant.BASE_URL
 import com.example.tddconcepts.utils.Constant.DATABASE_NAME
 import dagger.Module
@@ -17,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
+
 @Module
 @InstallIn(ApplicationComponent::class)
 object AppModule {
@@ -24,21 +27,24 @@ object AppModule {
     @Singleton
     @Provides
     fun provideShoppingItemDataBase(@ApplicationContext context:Context) =
-            Room.databaseBuilder(context,ShoppingItemDataBase::class.java,DATABASE_NAME).build()
+    Room.databaseBuilder(context,ShoppingItemDataBase::class.java,DATABASE_NAME).build()
 
+    @Singleton
+    @Provides
+    fun provideDefaultShoppingRepository(shoppingDao: ShoppingDao,api: PixalByApi) = DefaultShoppingRepository(shoppingDao,api) as ShoppingRepository
 
     @Singleton
     @Provides
     fun provideShoppingDao(shoppingItemDataBase: ShoppingItemDataBase)=shoppingItemDataBase.shoppingDao()
 
-
     @Singleton
     @Provides
-    fun providePixalByApi():PixalByApi{
+    fun providePixalByApi(): PixalByApi {
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build()
                 .create(PixalByApi::class.java)
     }
+
 }
