@@ -7,7 +7,8 @@ import com.example.tddconcepts.data.remote.responses.ImageResponse
 import com.example.tddconcepts.utils.Resource
 
 
-class FakeShoppingRepository : ShoppingRepository{
+class FakeShoppingRepository : ShoppingRepository {
+
     private val shoppingItems         = mutableListOf<ShoppingItem>()
     private val observalShoppingItems = MutableLiveData<List<ShoppingItem>>(shoppingItems)
     private val observableTotalPrice  = MutableLiveData<Float>()
@@ -36,7 +37,7 @@ class FakeShoppingRepository : ShoppingRepository{
         refreshLiveData()
     }
 
-    override fun observeAllShoppingItem(shoppingItem: ShoppingItem): LiveData<List<ShoppingItem>> {
+    override fun observeAllShoppingItem(): LiveData<List<ShoppingItem>> {
         return observalShoppingItems
     }
 
