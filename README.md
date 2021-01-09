@@ -8,4 +8,4 @@
 
 4-Architectural Skeleton.
 
-5-Testing ViewModels - Testing 
+5-Testing ViewModels. 
